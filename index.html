@@ -89,8 +89,10 @@ const dclass=d=>(d||'').startsWith('ADOPT')?'ADOPT':(d||'').startsWith('REVISE')
 const themes=[...new Set(M.map(m=>m.theme))].sort();
 let state={dec:'ALL',theme:'ALL',q:'',content:'proposals',sort:'bills',open:new Set()};
 
+const _lk={}; LIT.forEach(x=>_lk[x.kind]=(_lk[x.kind]||0)+1);
+const _litStr=[['academic_paper','academic papers'],['policy_report','policy reports'],['published_study','published studies']].filter(([k])=>_lk[k]).map(([k,l])=>_lk[k]+' '+l).join(', ');
 document.getElementById('subtitle').textContent =
- `${M.length} distinct measures (unbundled from ${DATA.summary.house_bills_total} House bills; refiles grouped only when ≥90% identical), each screened individually against ULAP's six proposed principles — set beside ${LIT.length} academic & policy sources on what the literature says about the revisions. Generated ${DATA.generated}.`;
+ `${M.length} distinct legislative measures (consolidated from ${DATA.summary.house_bills_total} House bills; refiles grouped only when ≥90% identical) and ${LIT.length} literature sources (${_litStr}) proposing amendments or revisions to the Local Government Code (LGC), assessed against ULAP's six guiding principles for revising the LGC.`;
 
 function decCounts(arr){const c={ADOPT:0,REVISE:0,REJECT:0};arr.forEach(m=>c[dclass(m.decision)]++);return c;}
 const C=decCounts(M);
